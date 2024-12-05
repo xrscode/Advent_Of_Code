@@ -29,10 +29,19 @@ def day_one():
         else:
             continue
     
-    return sum(diff)
+    print(f'The total difference is: {sum(diff)}.')
+
+    similarity = []
+
+    for x in l1s:
+        num = l2s.count(x)
+        if num:
+            similarity.append(x * num)
     
-print(day_one())
+    print(f'The total similarity is: {sum(similarity)}.')
     
+    
+day_one()    
   
  
 
