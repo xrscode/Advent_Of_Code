@@ -10,16 +10,7 @@ def get_data(location):
 
 # Read live data:
 live_data = get_data('./data.txt')
-# live_data = """MMMSXXMASM
-# MSAMXMSMSA
-# AMXSXMAAMM
-# MSAMASMSMX
-# XMASAMXAMM
-# XXAMMXXAMA
-# SMSMSASXSS
-# SAXAMASAAA
-# MAMMMXMMMM
-# MXMXAXMASX"""
+
 
 
 # Create Array from live data:
@@ -84,10 +75,50 @@ for iy, row in enumerate(live_arr):
                     XMAS += 1
 
 
+MAS = 0
+
+sample = """....XXMAS.
+.SAMXMS...
+...S..A...
+..A.A.MS.X
+XMASAMX.MM
+X.....XA.A
+S.S.S.S.SS
+.A.A.A.A.A
+..M.M.M.MM
+.X.X.XMASX"""
+
+live_arr = [[x for x in line] for line in sample.split('\n')]
+for line in live_arr:
+    print(line)
+
+
+
+a_tally = 0
+# Ensure boundaries implemented correctly:
+for y, row in enumerate(live_arr):
+    for x, char in enumerate(row):
+        if char == 'A':
+            # X-Axis Check:
+            if len(row) - 2 > x > 0:
+                # Y-Axis Check:
+                if len(live_arr) - 2 > y > 0:
+                    a_tally += 1
+                    
+print("A's: ", {a_tally})
+     
+print(100-36)
+
+
+
 
         
 
 # Check total count:
 print(f'XMAS appears: {XMAS} times.')
+print(f'MAS appears:  {MAS} times' )
+# MAS: 2829 - TOO HIGH.
+# MAS: 3306 - TOO HIGH.
+# MAS: 1320 - TOO LOW.
 
 
