@@ -75,26 +75,22 @@ for iy, row in enumerate(live_arr):
                     XMAS += 1
 
 
-MAS = 0
 
-sample = """....XXMAS.
-.SAMXMS...
-...S..A...
-..A.A.MS.X
-XMASAMX.MM
-X.....XA.A
-S.S.S.S.SS
-.A.A.A.A.A
-..M.M.M.MM
-.X.X.XMASX"""
+sample = """.M.S......
+..A..MSMS.
+.M.S.MAA..
+..A.ASMSM.
+.M.S.M....
+..........
+S.S.S.S.S.
+.A.A.A.A..
+M.M.M.M.M.
+AAAAAAAAAA"""
 
 live_arr = [[x for x in line] for line in sample.split('\n')]
-for line in live_arr:
-    print(line)
+print(live_arr)
 
-
-
-a_tally = 0
+MAS = 0
 # Ensure boundaries implemented correctly:
 for y, row in enumerate(live_arr):
     for x, char in enumerate(row):
@@ -103,11 +99,16 @@ for y, row in enumerate(live_arr):
             if len(row) - 2 > x > 0:
                 # Y-Axis Check:
                 if len(live_arr) - 2 > y > 0:
-                    a_tally += 1
-                    
-print("A's: ", {a_tally})
+                    # Bottom Left to Top Right:
+                    bltr = f"{live_arr[y + 1][x - 1]}{live_arr[y][x]}{live_arr[y - 1][x + 1]}"
+                    # Bottom Right to Top Left:
+                    brtl = f"{live_arr[y - 1][x + 1]}{live_arr[y][x]}{live_arr[y + 1][x - 1]}"
+                    # Check Strings:
+                    if bltr in ('MAS', 'SAM') and brtl in ('MAS', 'SAM'):
+                        MAS += 1
+
+
      
-print(100-36)
 
 
 
@@ -120,5 +121,6 @@ print(f'MAS appears:  {MAS} times' )
 # MAS: 2829 - TOO HIGH.
 # MAS: 3306 - TOO HIGH.
 # MAS: 1320 - TOO LOW.
+# MAS: 2760 - Not working.
 
 
