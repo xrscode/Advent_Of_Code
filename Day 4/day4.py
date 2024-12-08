@@ -85,26 +85,22 @@ sample = """.M.S......
 S.S.S.S.S.
 .A.A.A.A..
 M.M.M.M.M.
-AAAAAAAAAA"""
+.........."""
+# live_arr = [[x for x in line] for line in sample.split('\n')]
 
-live_arr = [[x for x in line] for line in sample.split('\n')]
-print(live_arr)
 
 MAS = 0
 # Ensure boundaries implemented correctly:
 for y, row in enumerate(live_arr):
     for x, char in enumerate(row):
-        if char == 'A':
-            # X-Axis Check:
-            if len(row) - 2 > x > 0:
-                # Y-Axis Check:
-                if len(live_arr) - 2 > y > 0:
+        if char == 'A' and len(row) - 1 > x > 0 and len(live_arr) - 1 > y > 0:
                     # Bottom Left to Top Right:
                     bltr = f"{live_arr[y + 1][x - 1]}{live_arr[y][x]}{live_arr[y - 1][x + 1]}"
                     # Bottom Right to Top Left:
-                    brtl = f"{live_arr[y - 1][x + 1]}{live_arr[y][x]}{live_arr[y + 1][x - 1]}"
+                    brtl = f"{live_arr[y + 1][x + 1]}{live_arr[y][x]}{live_arr[y - 1][x - 1]}"
                     # Check Strings:
-                    if bltr in ('MAS', 'SAM') and brtl in ('MAS', 'SAM'):
+                    if bltr in ['MAS', 'SAM'] and brtl in ['MAS', 'SAM']:
+                        print(bltr, brtl)
                         MAS += 1
 
 
@@ -122,5 +118,4 @@ print(f'MAS appears:  {MAS} times' )
 # MAS: 3306 - TOO HIGH.
 # MAS: 1320 - TOO LOW.
 # MAS: 2760 - Not working.
-
-
+# 1998
