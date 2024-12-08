@@ -75,20 +75,7 @@ for iy, row in enumerate(live_arr):
                     XMAS += 1
 
 
-
-sample = """.M.S......
-..A..MSMS.
-.M.S.MAA..
-..A.ASMSM.
-.M.S.M....
-..........
-S.S.S.S.S.
-.A.A.A.A..
-M.M.M.M.M.
-.........."""
-# live_arr = [[x for x in line] for line in sample.split('\n')]
-
-
+# Part 2
 MAS = 0
 # Ensure boundaries implemented correctly:
 for y, row in enumerate(live_arr):
@@ -118,4 +105,3 @@ print(f'MAS appears:  {MAS} times' )
 # MAS: 3306 - TOO HIGH.
 # MAS: 1320 - TOO LOW.
 # MAS: 2760 - Not working.
-# 1998
