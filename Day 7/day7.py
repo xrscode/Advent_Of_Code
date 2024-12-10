@@ -16,57 +16,61 @@ def get_data(location):
 # Read live data:
 data = get_data('./data.txt')
 
+import itertools
+
 def evaluate_left_to_right(expression):
-    """Evaluate a mathematical expression strictly from left to right."""
-    # Split the expression into tokens
+    """Evaluate a mathematical expression strictly from left to right, including `||` for concatenation."""
     tokens = expression.split()
-    # Start with the first number
-    result = int(tokens[0])
+    result = tokens[0]
     
-    # Iterate through the tokens pairwise (operator, operand)
     for i in range(1, len(tokens), 2):
         operator = tokens[i]
-        operand = int(tokens[i + 1])
+        operand = tokens[i + 1]
         
         if operator == '+':
-            result += operand
+            result = str(int(result) + int(operand))
+        elif operator == '-':
+            result = str(int(result) - int(operand))
         elif operator == '*':
-            result *= operand
+            result = str(int(result) * int(operand))
+        elif operator == '/':
+            result = str(int(result) / int(operand))
+        elif operator == '||':
+            result = result + operand  # Concatenate as strings
         else:
             raise ValueError(f"Unknown operator: {operator}")
-    return result
-
-
+    
+    return int(result)
 
 def generate_combinations(num, numbers):
+    """Generate all possible combinations of `+`, `*`, and `||` for the given numbers."""
     total = 0
-    """Generate all possible combinations of `+` and `*` for length `n`."""
-    symbols = ['+', '*']
-    combinations =  list(itertools.product(symbols, repeat=len(numbers)- 1))
-    for i, x in enumerate(combinations):
+    symbols = ['+', '*', '||']
+    combinations = list(itertools.product(symbols, repeat=len(numbers) - 1))
+    
+    for comb in combinations:
         expression = ''
-        for i, y in enumerate(numbers):
+        for i, number in enumerate(numbers):
             if i == len(numbers) - 1:
-                expression += f' {str(numbers[i])}'
-            elif i == 0:
-                expression += f'{str(numbers[i])} {str(x[i])}'
+                expression += f'{number}'
             else:
-                expression += f' {str(numbers[i])} {str(x[i])}'
+                expression += f'{number} {comb[i]} '
+        
+        # Evaluate the expression
         record = evaluate_left_to_right(expression)
         
+        # Check if it matches the target number
         if record == num:
             total += num
-            return total
-
-    return total
+            return total  # Return early if a match is found
     
+    return total
 
 
-
-# print(generate_combinations(3267, [81, 40, 27]))
 
 
 t = 0
 for i, x in data:
+    print('Current t value: ', t)
     t += generate_combinations(i, x)
-print('Part 1 answer: ', {t})
+print('Part 1 answer: ', t)
