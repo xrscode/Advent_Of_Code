@@ -56,18 +56,36 @@ def antinode(data):
        
        # Iterate through pairs of combinations to make comparisons:
         for i, x in enumerate(combinations):
+
             # Check not comparing same values:
             if x[0] != x[1]:
                 # Establish Antenna Locations:
                 ant_1 = [x[0][0], x[0][1]]
                 ant_2 = [x[1][0], x[1][1]]
-                # Ant_1 ABOVE Ant_2:
-                if ant_1[1] > ant_2[1]:
-                    print('Ant_1 above ant_2')
-                else:
-                    print('Ant_2 is above ant_1')
+                
 
-                # Ant_2 ABOVE Ant_1:
+                """
+                HORIZONTAL
+                Establish which antenane is 'ahead':  Has a greater y value. 
+                Then work out the x - distance and y - distance between two antennaes.
+                Then work out possible antinode positions. 
+                """
+                if ant_1[0] != ant_2[0] and ant_1[1] != ant_2[1]:
+                    x_dis = ant_1[0] - ant_2[0]
+                    y_dis = ant_1[1] - ant_2[1]
+                    print('X distance: ', x_dis, 'Y distance: ', y_dis)
+
+                 
+                    ant_n_one = [ant_1[0] + x_dis, ant_1[1] + y_dis]
+                    if boundary(ant_n_one[0], ant_n_one[1]) and ant_n_one not in antinodes:
+                            antinodes.append(ant_n_one)
+                 
+                    ant_n_two = [ant_2[0] + x_dis, ant_2[1] - y_dis]
+                    if boundary(ant_n_two[0], ant_n_two[1]) and ant_n_two not in antinodes:
+                            antinodes.append(ant_n_two)
+
+
+               
         
                 
                 # Check Vertical: y 0, x 1
