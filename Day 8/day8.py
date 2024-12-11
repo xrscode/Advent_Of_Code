@@ -73,8 +73,6 @@ def antinode(data):
                     x_dis = ant_1[0] - ant_2[0]
                     y_dis = ant_1[1] - ant_2[1]
                     
-
-
                     # Select the correct order:
                     if y_dis < 0:
                         # Grab most positive y:
@@ -120,9 +118,9 @@ def antinode(data):
                             
                         antiN1 = [fwx1, fwy1]
                         antiN2 = [rwx1, rwy2]
-                        if antiN1 not in antinodes:
+                        if antiN1 not in antinodes and boundary(antiN1[0], antiN2[1]):
                             antinodes.append(antiN1)
-                        if antiN2 not in antinodes:
+                        if antiN2 not in antinodes and boundary(antiN2[0], antiN2[1]):
                             antinodes.append(antiN2)
 
 
