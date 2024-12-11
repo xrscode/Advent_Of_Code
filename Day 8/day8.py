@@ -15,7 +15,6 @@ data = get_data('./data.txt')
 
 # Read live data:
 live_data = get_data('./data.txt')
-live_data.reverse()
 sample_data = get_data('./sample.txt')
 
 # Diagram to help visualise concept:
@@ -23,7 +22,6 @@ for i, line in enumerate(sample_data):
     print(i, line.strip())
 
 def antinode(data):
-    
     # Create boundary check function:
     def boundary(x, y):
         # X must be less than length of row:
@@ -56,7 +54,6 @@ def antinode(data):
        
        # Iterate through pairs of combinations to make comparisons:
         for i, x in enumerate(combinations):
-
             # Check not comparing same values:
             if x[0] != x[1]:
                 # Establish Antenna Locations:
@@ -80,55 +77,20 @@ def antinode(data):
                         b = ant_1
                         fwy1 = f[1] + y_dis * -1
                         rwy1 = b[1] + y_dis
-                        if x_dis < 0:
+                    if x_dis < 0:
                             # Grab most positive x:
                             f = ant_2
                             b = ant_1
                             fwx1 = f[0] + x_dis * -1
                             rwx1 = f[0] + x_dis - 1
-                           
-                        else:
-                            # Grab most positive x:
-                            f = ant_2
-                            b = ant_1
-                            fwx1 = f[0] + x_dis -1
-                            rwx1 = f[0] + x_dis * -1
-                            
-                    else:
-                        # Grab most positive y:
-                        f = ant_1
-                        b = ant_2
-                        fwy2 = f[1] + y_dis
-                        rwy2 = b[1] + y_dis * -1
                         
-                        if x_dis < 0:
-                            # Grab most positive x:
-                            f = ant_2
-                            b = ant_1
-                            fwx2 = f[0] + x_dis
-                            rwx2 = f[0] + x_dis
-                            
-                        else:
-                            # WORKING
-                            # Grab most positive x:
-                            f = ant_1
-                            b = ant_2
-                            fwx2 = f[0] + x_dis
-                            rwx2 = f[0] + x_dis
-                            
-                        antiN1 = [fwx1, fwy1]
-                        antiN2 = [rwx1, rwy2]
-                        if antiN1 not in antinodes and boundary(antiN1[0], antiN2[1]):
-                            antinodes.append(antiN1)
-                        if antiN2 not in antinodes and boundary(antiN2[0], antiN2[1]):
-                            antinodes.append(antiN2)
+                    antiN1 = [fwx1, fwy1]
+                    antiN2 = [rwx1, rwy1]
+                    if antiN1 not in antinodes and boundary(antiN1[0], antiN2[1]):
+                        antinodes.append(antiN1)
+                    if antiN2 not in antinodes and boundary(antiN2[0], antiN2[1]):
+                        antinodes.append(antiN2)
 
-
-               
-        
-                
-                # Check Vertical: y 0, x 1
-                # Check Horizontal: y1, x 0
             
            
     print(antinodes)
