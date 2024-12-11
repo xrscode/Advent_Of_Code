@@ -78,14 +78,16 @@ def antinode(data):
                         fwy1 = f[1] + y_dis * -1
                         rwy1 = b[1] + y_dis
                     if x_dis < 0:
-                            # Grab most positive x:
-                            f = ant_2
-                            b = ant_1
-                            fwx1 = f[0] + x_dis * -1
-                            rwx1 = f[0] + x_dis - 1
+                        # Grab most positive x:
+                        f = ant_2
+                        b = ant_1
+                        fwx1 = f[0] + x_dis * -1
+                        rwx1 = f[0] + x_dis - 1
                         
                     antiN1 = [fwx1, fwy1]
                     antiN2 = [rwx1, rwy1]
+
+                    # Check that Antinodes are in bounds. 
                     if antiN1 not in antinodes and boundary(antiN1[0], antiN2[1]):
                         antinodes.append(antiN1)
                     if antiN2 not in antinodes and boundary(antiN2[0], antiN2[1]):
