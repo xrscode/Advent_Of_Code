@@ -1,14 +1,14 @@
 # Function to access data:
 def get_data(location):
-    
     # Open data and append to list:
     with open(f'{location}', 'r') as d:
-        arr = [[int(char) for char in line] for line in d]
+      arr = [int(char) for char in d.read()]  
     return arr
 
 # Read live data:
 data = get_data('./data.txt')
 sample = [int(char) for char in '2333133121414131402']
+
 
 def compact(files):
     new_list = []
@@ -29,50 +29,49 @@ def compact(files):
             for val in range(x):
                 new_list.append('.')
     
+  
+    f_stop_count = new_list.count('.')
+    f_stop_arr = ['.' for i in range(f_stop_count)]
 
+    iteration = 0
+  
+    while new_list[-len(f_stop_arr):] != f_stop_arr:  # Ensure the last part matches `f_stop_arr`
+        iteration += 1
+        print(f'Iteration number: {iteration}')
+        for i, num in enumerate(new_list[:]):  # Use a copy to avoid issues with list modification
+            # Find the last integer
+            last_digit = [n for n in new_list[::-1] if isinstance(n, int)][0]
+            last_index = len(new_list) - 1 - new_list[::-1].index(last_digit)
+
+            if num == '.':
+                # Replace the current '.' with the last digit
+                new_list[i] = last_digit
+
+                # Remove the last occurrence of the last digit
+                new_list.pop(last_index)
+
+                # Add a '.' to the end
+                new_list.append('.')
+
+                # Exit the loop early to re-evaluate the condition
+                break
+
+  
+    sum = 0
     
-    # Count number of full stops.
-    full_stops = new_list.count('.')
-    # Create an array of said number of fullstops.  Used for comparison later:
-    full_stop_arr = ['.' for i in range(full_stops)]
-
-    # SORT
-    temp_list = []
-
-    # First sort to get full stops in correct position.
-    while new_list[-full_stops:] != full_stop_arr:  # Keep sorting until end of list looks like full_stop_arr
-        for i, x in enumerate(new_list[:]):  # Use a copy of `new_list` to avoid issues
-            if x == '.':
-                new_list.pop(i)          # Remove the current '.'
-                new_list.append('.')     # Add it to the end
-                temp_list.append(new_list[:])  # Store a snapshot of the current state
-                break  # Restart the loop to prevent index missalignment
+    for i, x in enumerate(new_list):
+        if isinstance(x, int):
+            num = x * i
+            if num > 0:
+                sum += num
     
-    new_temp = []
-    # Now sort arrays in temp list to change number positions
-    for i, line in enumerate(temp_list):
-        full_stops = i + 1  # Define full_stops as the iteration count plus 1
-        # Get the slice of the list that corresponds to the "numbers" you want to move
-        numbers = line[len(line) - full_stops * 2: len(line) - full_stops]
-        
-        # Remove the selected slice from the list (use del to remove a slice)
-        del line[len(line) - full_stops * 2: len(line) - full_stops]
-        
-        # Insert the numbers at the desired position in the list (at index i)
-        line.insert(0, numbers)  # Use * to unpack the list of numbers
-        
-        # Append the modified line to new_temp
-        new_temp.append(line)
+    
+    return sum
 
-    # Output the results for verification
-    for line in new_temp:
-        print(line)
-      
+# print(f'Sample data one: {compact([1, 2, 3, 4, 5])}')
+# print(f'Sample data two: {compact(sample)}')
+print(f'Part one answer: {compact(data)}')
 
-compact(sample)
-
-# STOP:
-# len(line) - full_stops
 
 
     
