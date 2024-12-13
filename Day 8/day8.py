@@ -344,6 +344,6 @@ string_two = """T....#....
 
 print(f'String one should be 34.  Answer is: {antinode2(string_one)}')
 print(f'String two should be 9.  Answer is: {antinode2(string_two)}')
-print(f'The answer to part 2 is: {antinode2(data)}')
+print(f'The answer to part 2 is: {antinode2(data + 1)}')
 # 1183 - not correct.
 
