@@ -33,28 +33,43 @@ def compact(files):
     f_stop_count = new_list.count('.')
     f_stop_arr = ['.' for i in range(f_stop_count)]
 
+    print(f_stop_count)
+
     iteration = 0
   
-    while new_list[-len(f_stop_arr):] != f_stop_arr:  # Ensure the last part matches `f_stop_arr`
-        iteration += 1
-        print(f'Iteration number: {iteration}')
-        for i, num in enumerate(new_list[:]):  # Use a copy to avoid issues with list modification
-            # Find the last integer
-            last_digit = [n for n in new_list[::-1] if isinstance(n, int)][0]
-            last_index = len(new_list) - 1 - new_list[::-1].index(last_digit)
+    def optimized_sort(new_list, f_stop_arr):
+        iteration = 0
+        target_len = len(f_stop_arr)
 
-            if num == '.':
-                # Replace the current '.' with the last digit
-                new_list[i] = last_digit
+        while new_list[-target_len:] != f_stop_arr:  # Ensure the last part matches `f_stop_arr`
+            iteration += 1
+            print(f'Iteration number: {iteration}')
 
-                # Remove the last occurrence of the last digit
-                new_list.pop(last_index)
+            # Find the last integer in the list once per iteration
+            try:
+                last_digit = next(n for n in reversed(new_list) if isinstance(n, int))
+            except StopIteration:
+                raise ValueError("No integers found in the list.")
 
-                # Add a '.' to the end
-                new_list.append('.')
+            for i, num in enumerate(new_list):
+                if num == '.':
+                    # Replace the current '.' with the last digit
+                    new_list[i] = last_digit
 
-                # Exit the loop early to re-evaluate the condition
-                break
+                    # Remove the last occurrence of the last digit (optimize search)
+                    last_index = len(new_list) - 1 - new_list[::-1].index(last_digit)
+                    new_list.pop(last_index)
+
+                    # Add a '.' to the end
+                    new_list.append('.')
+
+                    # Exit the loop after a single replacement
+                    break
+    
+
+        return new_list
+    
+    optimized_sort(new_list, f_stop_arr)
 
   
     sum = 0
@@ -68,11 +83,12 @@ def compact(files):
     
     return sum
 
-# print(f'Sample data one: {compact([1, 2, 3, 4, 5])}')
-# print(f'Sample data two: {compact(sample)}')
-print(f'Part one answer: {compact(data)}')
+# print(f'Sample data one: {compact([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15])}')
+# # print(f'Sample data two: {compact(sample)}')
+# print(f'Part one answer: {compact(data)}')
 
 
+print(compact(data))
 
     
 
