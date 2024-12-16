@@ -126,53 +126,31 @@ def compact2(files):
             index_arr = []  # Reset index array
     index_arr = []
 
-    # print('Values dictionary:')
-    # for key in values_dict:
-    #     print(key, values_dict[key])
+    # Print value dictionary:
+    for value in values_dict:
+        print(f'Index position: {value}.  Value is: {values_dict[value]}')
 
-    
-    # print('Sapces dictionary')
+    # Print spaces dictionary:
+    for value in spaces_dict:
+        print(f'Space found at index position: {value}.  The total space is: {spaces_dict[value]}')
 
-    # For each space, work out how many possible numbers you could add:
-    for key in spaces_dict:
-        possible_numbers = []
-        while len(possible_numbers) < spaces_dict[key]['total_space']:
-            # Try to work out viable numbers for space:
-            for index in values_dict:
-                # In the values_dict the index is the position of the value.
-                if values_dict[index]['length'] <= spaces_dict[key]['total_space']:
-                    possible_numbers.append(values_dict[index])
-                    
-            print(possible_numbers)
+    for space in spaces_dict:
+        space_to_fill = spaces_dict[space]['total_space']
+        arr = spaces_dict[space]['num_arr']
+        while len(arr) < space_to_fill:
+            possible_nums = []
+            for value in values_dict:
+                if values_dict[value]['length'] <= space_to_fill:
+                    possible_nums.append(values_dict[value])
+            for i in range(possible_nums[-1]['length']):
+                arr.append(possible_nums[-1]['value'])
+            del(values_dict[value])
+        print(spaces_dict)
+
 
             
 
-        # possible_numbers = []
-        # print(key, spaces_dict[key])
-        
-        # # Iterate through the values dictionary and look for viable lengths.
-        # while True:
-        #     # First try to add numbers to possible_numbers arr
-        #     for index in values_dict:
-        #         # In the values_dict the index is the position of the value.
-        #         if values_dict[index]['length'] <= spaces_dict[key]['total_space']:
-        #             possible_numbers.append(values_dict[index])
 
-        #             # If no numbers are added, break:
-        #             if len(possible_numbers) == 0:
-        #                 print('There are no possible numbers found.')
-        #                 break
-        #             # If numbers are added, add to spaces_dict:
-        #             else:
-        #                 # Append the number x number of times into the space dictionary:
-        #                 for i in range(possible_numbers[-1]['length']):
-        #                     spaces_dict[key]['num_arr'].append(possible_numbers[-1]['value'])
-        #                 # When number has been added successfully, delete from values_dictionary:
-        #                 del(values_dict[index])
-        #                 print(spaces_dict)
-            
-                     
-        # print(f"At index position: {key}. The space is: {spaces_dict[key]['total_space']} and the possible numbers that could fit in this space are: {possible_numbers}")
 
 
 
