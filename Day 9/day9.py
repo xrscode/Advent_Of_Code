@@ -180,51 +180,25 @@ def compact2(files):
     
     print(spaces_dict)
 
-    for key in spaces_dict:
+    for key, value in spaces_dict.items():
         index = key
-        arr = spaces_dict[key]['num_arr']
+        arr = value['num_arr']
+        
+        # Map elements from `arr` to `new_list` starting at `index`
         for i, x in enumerate(arr):
-            def remove_all_occurrences(lst, x):
-                # Find all indices where x occurs
-                indices = [i for i, value in enumerate(lst) if value == x]
-                
-                # Remove elements at those indices, starting from the largest index
-                for index in sorted(indices, reverse=True):
-                    del lst[index]
-
-                return lst
-            remove_all_occurrences(new_list, x)    
             new_list[index + i] = x
+
+    # Clean up `new_list` by removing duplicates of `arr` beyond the valid range
+    valid_range = max(key + len(value['num_arr']) for key, value in spaces_dict.items())
+    new_list = [
+        y for c, y in enumerate(new_list)
+        if c <= valid_range or y not in [value['num_arr'] for value in spaces_dict.values()]
+]
            
             
         
     
     print(new_list)
-
-            
-
-
-        
-        # while len(space['array']) < remaining_space:
-        #     found_number = False
-            
-        #     # Find viable numbers from values_dict
-        #     for value in values_dict:  # Use list() to avoid modifying dict while iterating
-        #             viable_numbers = []
-
-
-                    
-        #             # Remove the number from values_dict if it's fully used
-        #             if values_dict[value] == 0:
-        #                 del values_dict[value]
-                    
-        #             found_number = True
-        #             break  # Restart the loop after adding a number
-            
-        #     # Break the while loop if no viable numbers are found
-        #     if not found_number:
-        #         print(f"Cannot completely fill space {space_key}. Remaining space: {remaining_space - len(space['array'])}")
-        #         break
 
    
 
