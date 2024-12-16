@@ -128,24 +128,110 @@ def compact2(files):
 
     # Print value dictionary:
     for value in values_dict:
-        print(f'Index position: {value}.  Value is: {values_dict[value]}')
+        print(f'VALUE_DICT: Index position: {value}.  Value is: {values_dict[value]}')
 
     # Print spaces dictionary:
     for value in spaces_dict:
-        print(f'Space found at index position: {value}.  The total space is: {spaces_dict[value]}')
+        print(f'SPACE_DICT: Space found at index position: {value}.  The total space is: {spaces_dict[value]}')
 
-    for space in spaces_dict:
-        space_to_fill = spaces_dict[space]['total_space']
-        arr = spaces_dict[space]['num_arr']
-        while len(arr) < space_to_fill:
-            possible_nums = []
-            for value in values_dict:
-                if values_dict[value]['length'] <= space_to_fill:
-                    possible_nums.append(values_dict[value])
-            for i in range(possible_nums[-1]['length']):
-                arr.append(possible_nums[-1]['value'])
-            del(values_dict[value])
-        print(spaces_dict)
+
+
+
+   
+
+        # Iterate through each space in the spaces_dict
+    for space_key in spaces_dict:
+        space = spaces_dict[space_key]
+        remaining_space = spaces_dict[space_key]['total_space'] - len(spaces_dict[space_key]['num_arr'])
+        viable_numbers = True
+
+        # There MUST be viable numbers and space remaining in the array:
+        while remaining_space > 0 and viable_numbers:
+            # Create numbers array to store viable numbers:
+            viable_num_arr = []
+
+            # Iterate through value dictionary and add to viable_num_arr:
+            for value in list(values_dict):  # Use list() to avoid modifying dict while iterating
+                if values_dict[value]['length'] <= remaining_space:
+                    viable_num_arr.append([value, values_dict[value]])
+
+            # Check that there are viable numbers:
+            if len(viable_num_arr) == 0:
+                print(f"No more viable numbers for space {space_key}. Remaining space: {remaining_space}")
+                viable_numbers = False
+                break
+
+            # Select the best viable number (e.g., the largest that fits):
+            best_number = viable_num_arr[-1]  # Select the last number in viable_num_arr
+            val = best_number[1]['value']
+            quantity = best_number[1]['length']
+
+            # Add the number to the num_arr in spaces_dict
+            spaces_dict[space_key]['num_arr'].extend([val] * quantity)
+
+            # Update remaining_space
+            remaining_space -= quantity
+
+            # Remove or update the value in values_dict
+            values_dict[best_number[0]]['length'] -= quantity
+            if values_dict[best_number[0]]['length'] <= 0:
+                del values_dict[best_number[0]]  # Remove completely if used up
+
+    
+    print(spaces_dict)
+
+    for key in spaces_dict:
+        index = key
+        arr = spaces_dict[key]['num_arr']
+        for i, x in enumerate(arr):
+            def remove_all_occurrences(lst, x):
+                # Find all indices where x occurs
+                indices = [i for i, value in enumerate(lst) if value == x]
+                
+                # Remove elements at those indices, starting from the largest index
+                for index in sorted(indices, reverse=True):
+                    del lst[index]
+
+                return lst
+            remove_all_occurrences(new_list, x)    
+            new_list[index + i] = x
+           
+            
+        
+    
+    print(new_list)
+
+            
+
+
+        
+        # while len(space['array']) < remaining_space:
+        #     found_number = False
+            
+        #     # Find viable numbers from values_dict
+        #     for value in values_dict:  # Use list() to avoid modifying dict while iterating
+        #             viable_numbers = []
+
+
+                    
+        #             # Remove the number from values_dict if it's fully used
+        #             if values_dict[value] == 0:
+        #                 del values_dict[value]
+                    
+        #             found_number = True
+        #             break  # Restart the loop after adding a number
+            
+        #     # Break the while loop if no viable numbers are found
+        #     if not found_number:
+        #         print(f"Cannot completely fill space {space_key}. Remaining space: {remaining_space - len(space['array'])}")
+        #         break
+
+   
+
+
+        
+
+            
 
 
             
