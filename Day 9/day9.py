@@ -8,6 +8,7 @@ def get_data(location):
 # Read live data:
 data = get_data('./data.txt')
 sample = [int(char) for char in '2333133121414131402']
+sample_two = [int(char) for char in '1313165']
 
 
 def compact(files):
@@ -107,140 +108,85 @@ def compact2(files):
             # If i is odd, append a '.'.  
             for val in range(x):
                 new_list.append('.')
-                # Append to spaces_dictionary the index position and number of spaces:
-                
-    # Initialize dictionary to store sequences of dots
-    spaces_dict = {}
-    index_arr = []
+                # Append to spaces_dictionary the index position and number of spaces
 
-    # Determine spaces:
-    for i, x in enumerate(new_list):
-        if x == '.':
-            index_arr.append(i)  # Track indices of dots
-            # If it's the last element in the list, save the sequence
-            if i == len(new_list) - 1:
-                spaces_dict[index_arr[0]] = {'total_space': len(index_arr), 'num_arr': []}
-        elif isinstance(x, int) and index_arr:
-            # Save the sequence when transitioning from dots to a number
-            spaces_dict[index_arr[0]] = {'total_space': len(index_arr), 'num_arr': []}
-            index_arr = []  # Reset index array
-    index_arr = []
+    # Generate a list of all the numbers.
+    num_list = [x for x in new_list[::-1] if isinstance(x, int)]
+    # Turn them into 'blocks'.
+    block_list = []  # Initialize block_list
+    arr = []         # Initialize arr outside the loop
+    current_num = None  # Initialize current_num to None
 
-    # Print value dictionary:
-    for value in values_dict:
-        print(f'VALUE_DICT: Index position: {value}.  Value is: {values_dict[value]}')
+    for x in num_list:
+        if x == current_num:  # If x matches the current number
+            arr.append(x)     # Add x to the current block
+        else:                 # If x is a new number
+            if arr:           # If arr is not empty, save the previous block
+                block_list.append(arr)
+            arr = [x]         # Start a new block with the current number
+            current_num = x   # Update the current number
 
-    # Print spaces dictionary:
-    for value in spaces_dict:
-        print(f'SPACE_DICT: Space found at index position: {value}.  The total space is: {spaces_dict[value]}')
+    # After the loop, add the last block to block_list
+    if arr:
+        block_list.append(arr)
+        
+
+        
 
 
+    stop_count = new_list.count('.')
 
+    print(new_list, num_list, block_list)
 
-   
+    while block_list:
+        for i, x in enumerate(new_list[:]):
+            if isinstance(x, int):
+                # Remove numbers from block_list
+                for iy, ix in enumerate(block_list):
+                    if block_list[iy][0] == x:
+                        block_list.pop(iy)
+            elif x == '.':
+                # Determine how many '.' in front:
+                count = 1
+                for y in new_list[i- 1:]:
+                    if y == '.':
+                        count += 1
+                    else:
+                        count = 1
+                        break
+                    print('There is a space of; ', count)
 
-        # Iterate through each space in the spaces_dict
-    for space_key in spaces_dict:
-        space = spaces_dict[space_key]
-        remaining_space = spaces_dict[space_key]['total_space'] - len(spaces_dict[space_key]['num_arr'])
-        viable_numbers = True
+        #         # Now determine if there are any possible blocks to move:
+        #         for iy, y in enumerate(block_list):
+        #             # Block must be less than or equal to the value of count:
+        #             if len(y) <= count:
+        #                 num = y[0]
+        #                 # Add the numbers to the spaces:
+        #                 for c in range(0, len(y)):
+        #                     # Add the value.
+        #                     new_list[i+c] = num
+        #                     # Now find the last instance of num and remove.
+        #                     for ix, x in enumerate(new_list[::-1]):
+        #                         index_offset = len(new_list) - ix - 1
+        #                         if x == num:
+        #                             new_list[index_offset] = '.'
+        #                 block_list.pop(iy)
 
-        # There MUST be viable numbers and space remaining in the array:
-        while remaining_space > 0 and viable_numbers:
-            # Create numbers array to store viable numbers:
-            viable_num_arr = []
+        # sum = 0
+        # for i, x in enumerate(new_list):
+        #     if isinstance(x, int):
+        #         sum += i * x
+        #     else:
+        #         break
 
-            # Iterate through value dictionary and add to viable_num_arr:
-            for value in list(values_dict):  # Use list() to avoid modifying dict while iterating
-                if values_dict[value]['length'] <= remaining_space:
-                    viable_num_arr.append([value, values_dict[value]])
-
-            # Check that there are viable numbers:
-            if len(viable_num_arr) == 0:
-                print(f"No more viable numbers for space {space_key}. Remaining space: {remaining_space}")
-                viable_numbers = False
-                break
-
-            # Select the best viable number (e.g., the largest that fits):
-            best_number = viable_num_arr[-1]  # Select the last number in viable_num_arr
-            val = best_number[1]['value']
-            quantity = best_number[1]['length']
-
-            # Add the number to the num_arr in spaces_dict
-            spaces_dict[space_key]['num_arr'].extend([val] * quantity)
-
-            # Update remaining_space
-            remaining_space -= quantity
-
-            # Remove or update the value in values_dict
-            values_dict[best_number[0]]['length'] -= quantity
-            if values_dict[best_number[0]]['length'] <= 0:
-                del values_dict[best_number[0]]  # Remove completely if used up
-
+        # print(sum)
+        # return sum
     
-    print(spaces_dict)
 
-    for key, value in spaces_dict.items():
-        index = key
-        arr = value['num_arr']
-        
-        # Map elements from `arr` to `new_list` starting at `index`
-        for i, x in enumerate(arr):
-            new_list[index + i] = x
-
-    # Clean up `new_list` by removing duplicates of `arr` beyond the valid range
-    valid_range = max(key + len(value['num_arr']) for key, value in spaces_dict.items())
-    new_list = [
-        y for c, y in enumerate(new_list)
-        if c <= valid_range or y not in [value['num_arr'] for value in spaces_dict.values()]
-]
-           
-            
-        
-    
-    print(new_list)
-
-   
-
-
-        
-
-            
-
-
-            
-
-
-
-
-
-
-
-
-
-
-
-          
-            
-
-
-   
-   
-
-
-        
-
-
-
-    
-  
-
-  
-    pass
-
-compact2(sample)
+# compact2(sample)
 # compact2(data)
+compact2(sample_two)
     
-
+# 6200294120911 - Too low.
 
 
