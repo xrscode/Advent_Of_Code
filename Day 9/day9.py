@@ -112,75 +112,54 @@ def compact2(files):
 
     # Generate a list of all the numbers.
     num_list = [x for x in new_list[::-1] if isinstance(x, int)]
-    # Turn them into 'blocks'.
-    block_list = []  # Initialize block_list
-    arr = []         # Initialize arr outside the loop
-    current_num = None  # Initialize current_num to None
-
-    for x in num_list:
-        if x == current_num:  # If x matches the current number
-            arr.append(x)     # Add x to the current block
-        else:                 # If x is a new number
-            if arr:           # If arr is not empty, save the previous block
-                block_list.append(arr)
-            arr = [x]         # Start a new block with the current number
-            current_num = x   # Update the current number
-
-    # After the loop, add the last block to block_list
-    if arr:
-        block_list.append(arr)
-        
-
-        
-
-
-    stop_count = new_list.count('.')
-
-    print(new_list, num_list, block_list)
-
-    while block_list:
-        for i, x in enumerate(new_list[:]):
+    
+    def create_block(lst):
+        perm_arr = []
+        temp_arr = []
+        current_num = None
+        # Reverse the list and iterate through it:
+        for i, x in enumerate(lst[::-1]):
+            # if x is an integer:
             if isinstance(x, int):
-                # Remove numbers from block_list
-                for iy, ix in enumerate(block_list):
-                    if block_list[iy][0] == x:
-                        block_list.pop(iy)
-            elif x == '.':
-                # Determine how many '.' in front:
-                count = 1
-                for y in new_list[i- 1:]:
-                    if y == '.':
-                        count += 1
+                if current_num == None:
+                    current_num = x
+                    temp_arr.append(x)
+                elif x == current_num:
+                    temp_arr.append(x)
+                elif x != current_num:
+                    current_num = x
+                    perm_arr.append(temp_arr)
+                    temp_arr = [x]
+        if temp_arr:
+            perm_arr.append(temp_arr)
+        return perm_arr
+    block_list = create_block(num_list)
+    print(new_list, block_list)
+
+
+    index_tracked = []
+    # Now iterate through new_list and determine the LENGTH of each space.
+    for i, x in enumerate(new_list[:]):
+        # use copy of new_list to maintain index integrity. 
+        if x == '.':
+            if i in index_tracked:
+                # If index has already been tracked, ignore it.
+                continue
+            else:
+                # Determine which indexes can be filled
+                index_to_fill = []
+                # Iterate through slice of list here:
+                # Starting position should be equal to the index of x
+                for iy, ix in enumerate(new_list[i:]):
+                    if ix == '.':
+                        index = i + iy
+                        index_to_fill.append(index)
+                        index_tracked.append(index)
                     else:
-                        count = 1
+                        print('index to fill ', index_to_fill)
                         break
-                    print('There is a space of; ', count)
+        
 
-        #         # Now determine if there are any possible blocks to move:
-        #         for iy, y in enumerate(block_list):
-        #             # Block must be less than or equal to the value of count:
-        #             if len(y) <= count:
-        #                 num = y[0]
-        #                 # Add the numbers to the spaces:
-        #                 for c in range(0, len(y)):
-        #                     # Add the value.
-        #                     new_list[i+c] = num
-        #                     # Now find the last instance of num and remove.
-        #                     for ix, x in enumerate(new_list[::-1]):
-        #                         index_offset = len(new_list) - ix - 1
-        #                         if x == num:
-        #                             new_list[index_offset] = '.'
-        #                 block_list.pop(iy)
-
-        # sum = 0
-        # for i, x in enumerate(new_list):
-        #     if isinstance(x, int):
-        #         sum += i * x
-        #     else:
-        #         break
-
-        # print(sum)
-        # return sum
     
 
 # compact2(sample)
