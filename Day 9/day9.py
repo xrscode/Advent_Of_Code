@@ -136,6 +136,16 @@ def compact2(files):
     block_list = create_block(num_list)
     print(new_list, block_list)
 
+    # Create number indexes to make them easier to delete later:
+    del_dict = {}
+    for i, x in enumerate(new_list):
+        if isinstance(x, int):
+            if x not in del_dict:
+                del_dict[x] = [i]
+            else:
+                del_dict[x].append(i)
+
+    print('Numbers to delete, ', del_dict)
 
     index_tracked = []
     # Now iterate through new_list and determine the LENGTH of each space.
@@ -156,8 +166,20 @@ def compact2(files):
                         index_to_fill.append(index)
                         index_tracked.append(index)
                     else:
-                        print('index to fill ', index_to_fill)
+                        # MUST BREAK LOOP:
                         break
+                print('index to fill; ', index_to_fill)
+
+                
+        else:
+            # Delete from block list if number:
+            for ind, arr in enumerate(block_list):
+                if arr[0] == x:
+                    block_list.pop(ind)
+                    break
+    print(new_list)
+
+
         
 
     
