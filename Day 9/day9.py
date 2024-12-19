@@ -169,6 +169,23 @@ def compact2(files):
                         # MUST BREAK LOOP:
                         break
                 print('index to fill; ', index_to_fill)
+                space = len(index_to_fill)
+
+                def viable():
+                    return [x for x in block_list if len(x) <= len(index_to_fill)]
+            
+
+                while space and len(viable()) > 0:
+                    print(space, 'Space')
+                    for ry, rx in enumerate(block_list):
+                        if len(rx) <= space:
+                            space -= len(rx)
+                            for r in range(len(rx)):
+                                new_list[i + r] = rx[0]
+                                index_to_fill.pop()
+                            block_list.pop(ry)
+                        else:
+                            continue
 
                 
         else:
